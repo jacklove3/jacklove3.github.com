@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	*{margin:0; padding:0;}
+	#box{
+		width: 100px;
+		height: 100px;
+		border-radius:50%;
+		background:-webkit-radial-gradient(orange,white);
+		box-shadow:0 0 30px #ff3;
+		position:absolute;
+	}
+	#con{
+		height:200px;
+		line-height:100px;
+		text-align:center;
+		font-size:60px;
+		margin-top:100px;
+		text-shadow:0 0 0 #000;
+		font-weight:bold;
+	}
+</style>
+<script>
+	window.onload = function(){
+		var oBox = document.querySelector('#box');
+		var oCon = document.querySelector('#con'); 
+		document.onmousemove = function(ev){
+			oBox.style.left = ev.pageX-oBox.offsetWidth/2+'px';
+			oBox.style.top = ev.pageY-oBox.offsetHeight/2+'px';
+			var x = oCon.offsetLeft+oCon.offsetWidth/2-ev.pageX;
+			var y = oCon.offsetTop+oCon.offsetHeight/2-ev.pageY;
+			var dis = Math.sqrt(x*x+y*y)
+			oCon.style.textShadow = x+'px '+y+'px '+dis/20+'px #000';
+		};
+	};
+</script>
+</head>
+<body>
+	<div id="box"></div>
+	<div id="con">JACKLOVE</div>
+</body>
+</html>

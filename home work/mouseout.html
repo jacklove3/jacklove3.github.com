@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	*{margin:0; padding:0;}
+	@keyframes demo{
+		from{top:0px;}
+		to{top:-60px;}
+	}
+	#list{
+		width: 700px;
+		height: 60px;
+		margin: 100px auto;
+	}
+	#list li{
+		list-style:none;
+		width: 150px;
+		height: 60px;
+		float:left;
+		position:relative;
+		margin-left:20px;
+		overflow: hidden;
+	}
+	span{
+		
+		position:absolute;
+		left:0;
+		top:0;
+		background:black;
+		width: 150px;
+		height: 60px;
+	}
+	span:hover{
+		animation:demo 1s linear 1;
+	}
+</style>
+</head>
+<body>
+	<ul id="list">
+		<li style="background:red;"><span></span></li>
+		<li style="background:green;"><span></span></li>
+		<li style="background:orange;"><span></span></li>
+		<li style="background:#99ff00;"><span></span></li>
+	</ul>
+</body>
+</html>
