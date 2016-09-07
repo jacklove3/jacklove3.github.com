@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style>
+	@keyframes demo{
+		from{left:0;}
+		to{left:-113px;}
+	}
+	#box{
+		width: 113px;
+		height: 400px;
+		border:1px solid black;
+		margin:100px auto;
+		position: relative;
+		overflow: hidden;
+		box-shadow:10px 10px 10px black;	
+	}
+	#content{
+		width: 400px;
+		height: 400px;
+		position: absolute;
+		left:0;
+		top:0;
+		background:-webkit-repeating-linear-gradient(-45deg,red 0,red 20px,black 20px,black 40px,#99ff00 40px,#99ff00 60px,white 80px);
+		animation:demo 1s linear infinite;
+		border:1px solid black;
+	}
+	input{
+		position:absolute;
+		left:100px;
+		top:100px;
+	}
+</style>
+<script>
+	window.onload = function(){
+		var oBtn = document.querySelector('input');
+		var oCon = document.querySelector('#content');
+		oBtn.onclick = function(){
+			oCon.style.background = WebkitRepeatingLinearGradient(-45deg,this.value 0,red 20px,black 20px,black 40px,#99ff00 40px,#99ff00 60px,white 80px);
+		}
+	};
+</script>
+</head>
+<body>
+	<div id="box">
+		<div id="content"></div>
+	</div>
+	<input type="color" value="#ff0000" id="btn1">
+</body>
+</html>
