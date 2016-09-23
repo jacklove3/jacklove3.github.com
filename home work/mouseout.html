@@ -5,10 +5,7 @@
 	<title>Document</title>
 <style>
 	*{margin:0; padding:0;}
-	@keyframes demo{
-		from{top:0px;}
-		to{top:-60px;}
-	}
+	
 	#list{
 		width: 700px;
 		height: 60px;
@@ -31,10 +28,10 @@
 		background:black;
 		width: 150px;
 		height: 60px;
+		-webkit-transition:.3s all ease;
 	}
-	span:hover{
-		animation:demo 1s linear 1;
-	}
+	li:hover span{
+		top:-80px;
 </style>
 </head>
 <body>

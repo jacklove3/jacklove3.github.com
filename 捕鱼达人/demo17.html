@@ -15,33 +15,29 @@ canvas{ background:url(img/game_bg_2_hd.jpg) no-repeat;}
 <script src="js/sprite.js"></script>
 <script src="js/fish.js"></script>
 <script src="js/cannon.js"></script>
-<script src="js/bullet.js"></script>
 <script>
-function DieFish(images,type){
-	Sprite.call(this,images['fish'+type]);
+var BULLET_SIZE = [
+	null,
+	{sx:86,sy:0,w:24,h:26},
+	{sx:61,sy:0,w:25,h:29},
+	{sx:32,sy:35,w:27,h:31},
+	{sx:30,sy:82,w:29,h:33},
+	{sx:0,sy:82,w:30,h:34},
+	{sx:30,sy:0,w:31,h:35},
+	{sx:0,sy:44,w:32,h:38}
+];
+function Bullet(img,type){
+	Sprite.call(this,img);
 	
-	this.w = FISH_SIZE[type].w;
-	this.h = FISH_SIZE[type].h;
+	this.sx = BULLET_SIZE[type].sx;
+	this.sy = BULLET_SIZE[type].sy;
+	this.w = BULLET_SIZE[type].w;
+	this.h = BULLET_SIZE[type].h;
 	
-	this.status = 0;
-	this.goDie();
+	this.iSpeed = 6;
 }
-DieFish.prototype = new Sprite();
-DieFish.prototype.constructor = DieFish;
-DieFish.prototype.goDie = function(){
-	var _this = this;
-	this.sx = this.w*4;
-	this.timer = setInterval(function(){
-		_this.sx+=_this.w;
-		if(_this.sx>=_this.w*8){
-			_this.sx=_this.w*4;
-			_this.status = 1;
-		}
-		if(_this.status==1){
-			clearInterval(_this.timer);
-		}
-	},120);
-};
+Bullet.prototype = new Sprite();
+Bullet.prototype.constructor = Bullet;
 window.onload = function(){
 	var oC = document.getElementById('c1');
 	var gd = oC.getContext('2d');
@@ -81,32 +77,15 @@ window.onload = function(){
 				cannon.r = a2d(Math.atan2(b,a))+90;
 			};
 			
-			//装鱼
-			var aFish = [];
-			setInterval(function(){
-				var fish = new Fish(images,rnd(1,6));
-				fish.x = -50;
-				fish.y = rnd(0,oC.height);
-				fish.r = rnd(45,135);
-				aFish.push(fish);
-			},500);
-			
 			//装炮弹
 			var aBullet = [];
 			oC.onclick = function(){
-				var oA = new Audio();
-				oA.src = 'mp3/gunShot.mp3';
-				oA.play();
 				var bullet = new Bullet(images.bullet,cannon.type);
 				bullet.x = cannon.x;
 				bullet.y = cannon.y;
 				bullet.r = cannon.r;
 				aBullet.push(bullet);
 			};
-			
-			
-			//存死鱼
-			var aDieFish = [];
 			
 			//画图、运动
 			setInterval(function(){
@@ -118,72 +97,9 @@ window.onload = function(){
 					aBullet[i].draw(gd);
 					aBullet[i].move();
 				}
-				//画鱼、移动鱼
-				for(var i=0;i<aFish.length;i++){
-					aFish[i].draw(gd);
-					aFish[i].move();
-				}
-				
-				//检测炮弹的位置
-				for(var i=0;i<aBullet.length;i++){
-					if(aBullet[i].x<-50||aBullet[i].y<-50||aBullet[i].x>oC.width+50||aBullet[i].y>oC.height+50){
-						aBullet.splice(i,1);
-						i--;
-					}
-				}
-				
-				
-				//检测鱼的位置
-				for(var i=0;i<aFish.length;i++){
-					if(aFish[i].x<-50||aFish[i].y<-50||aFish[i].x>oC.width+50||aFish[i].y>oC.height+50){
-						aFish.splice(i,1);
-						i--;
-					}
-				}
-				
-				//检测鱼和炮弹是否碰撞
-				for(var i=0;i<aBullet.length;i++){
-					for(var j=0;j<aFish.length;j++){
-						if(aBullet[i]&&aFish[j]){
-							if(aBullet[i].collTest(aFish[j])){
-								aBullet.splice(i,1);
-								i--;
-								
-								var dieFish = new DieFish(images,aFish[j].type);
-								dieFish.x = aFish[j].x;
-								dieFish.y = aFish[j].y;
-								dieFish.r = aFish[j].r;
-								aDieFish.push(dieFish);
-								
-								aFish.splice(j,1);
-								j--;
-							}
-						}
-					}
-				}
-				
-				//画死鱼
-				for(var i=0;i<aDieFish.length;i++){
-					aDieFish[i].draw(gd);
-				}
-				
-				//检测死鱼是否真死
-				for(var i=0;i<aDieFish.length;i++){
-					if(aDieFish[i].status==1){
-						aDieFish.splice(i,1);
-						i--;
-					}
-				}
 				
 				cannon.draw(gd);
 			},30);
-			
-			//鱼摆尾
-			setInterval(function(){
-				for(var i=0;i<aFish.length;i++){
-					aFish[i].swim();
-				}
-			},120);
 		}
 	);
 };

@@ -74,11 +74,22 @@ window.onload = function(){
 			cannon.x = bottom.x+cannon.w/2+6;
 			cannon.y = bottom.y;
 			
+			
+			//装炮弹
+			var aBullet = [];
 			//鼠标在画布移动大炮跟着转动
 			oC.onmousemove = function(ev){
 				var a = ev.pageX-oC.offsetLeft-cannon.x;
 				var b = (ev.pageY-oC.offsetTop)-cannon.y;
 				cannon.r = a2d(Math.atan2(b,a))+90;
+				
+				for(var i=-5;i<5;i++){
+					var bullet = new Bullet(images.bullet,cannon.type);
+					bullet.x = cannon.x;
+					bullet.y = cannon.y;
+					bullet.r = cannon.r*((i-5)/-2);
+					aBullet.push(bullet);
+				}
 			};
 			
 			//装鱼
@@ -89,10 +100,9 @@ window.onload = function(){
 				fish.y = rnd(0,oC.height);
 				fish.r = rnd(45,135);
 				aFish.push(fish);
-			},500);
+			},1);
 			
-			//装炮弹
-			var aBullet = [];
+			/*
 			oC.onclick = function(){
 				var oA = new Audio();
 				oA.src = 'mp3/gunShot.mp3';
@@ -103,7 +113,7 @@ window.onload = function(){
 				bullet.r = cannon.r;
 				aBullet.push(bullet);
 			};
-			
+			*/
 			
 			//存死鱼
 			var aDieFish = [];

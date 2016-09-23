@@ -17,31 +17,6 @@ canvas{ background:url(img/game_bg_2_hd.jpg) no-repeat;}
 <script src="js/cannon.js"></script>
 <script src="js/bullet.js"></script>
 <script>
-function DieFish(images,type){
-	Sprite.call(this,images['fish'+type]);
-	
-	this.w = FISH_SIZE[type].w;
-	this.h = FISH_SIZE[type].h;
-	
-	this.status = 0;
-	this.goDie();
-}
-DieFish.prototype = new Sprite();
-DieFish.prototype.constructor = DieFish;
-DieFish.prototype.goDie = function(){
-	var _this = this;
-	this.sx = this.w*4;
-	this.timer = setInterval(function(){
-		_this.sx+=_this.w;
-		if(_this.sx>=_this.w*8){
-			_this.sx=_this.w*4;
-			_this.status = 1;
-		}
-		if(_this.status==1){
-			clearInterval(_this.timer);
-		}
-	},120);
-};
 window.onload = function(){
 	var oC = document.getElementById('c1');
 	var gd = oC.getContext('2d');
@@ -104,10 +79,6 @@ window.onload = function(){
 				aBullet.push(bullet);
 			};
 			
-			
-			//存死鱼
-			var aDieFish = [];
-			
 			//画图、运动
 			setInterval(function(){
 				gd.clearRect(0,0,oC.width,oC.height);
@@ -137,40 +108,6 @@ window.onload = function(){
 				for(var i=0;i<aFish.length;i++){
 					if(aFish[i].x<-50||aFish[i].y<-50||aFish[i].x>oC.width+50||aFish[i].y>oC.height+50){
 						aFish.splice(i,1);
-						i--;
-					}
-				}
-				
-				//检测鱼和炮弹是否碰撞
-				for(var i=0;i<aBullet.length;i++){
-					for(var j=0;j<aFish.length;j++){
-						if(aBullet[i]&&aFish[j]){
-							if(aBullet[i].collTest(aFish[j])){
-								aBullet.splice(i,1);
-								i--;
-								
-								var dieFish = new DieFish(images,aFish[j].type);
-								dieFish.x = aFish[j].x;
-								dieFish.y = aFish[j].y;
-								dieFish.r = aFish[j].r;
-								aDieFish.push(dieFish);
-								
-								aFish.splice(j,1);
-								j--;
-							}
-						}
-					}
-				}
-				
-				//画死鱼
-				for(var i=0;i<aDieFish.length;i++){
-					aDieFish[i].draw(gd);
-				}
-				
-				//检测死鱼是否真死
-				for(var i=0;i<aDieFish.length;i++){
-					if(aDieFish[i].status==1){
-						aDieFish.splice(i,1);
 						i--;
 					}
 				}
